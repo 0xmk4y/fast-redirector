@@ -15,3 +15,7 @@ EXPOSE 80
 
 # Run workers
 CMD ["fastapi", "run", "run.py", "--host", "0.0.0.0", "--port", "80"]
+
+# Build the Docker image
+# docker build -t fast-redirctor .
+# docker run -d -p 80:80 fast-redirctor

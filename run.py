@@ -18,6 +18,8 @@ def supabase_client() -> Client:
 @app.get("/{path}")
 def redirector(path: str):
     supabase: Client = supabase_client()
+    if len(path) >= 6:
+        raise HTTPException(status_code=400)
     response = supabase.table("urls").select("*").eq("short", path).execute()
     
     if response.data:
