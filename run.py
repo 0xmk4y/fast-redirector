@@ -25,13 +25,13 @@ def redirector(path: str):
         print(response)
         
         if response.data:
-            original_link = response.data[0].get("original_link")
-            if original_link:
+            original_url = response.data[0].get("original_url")
+            if original_url:
                 # Ensure the URL starts with "http://" or "https://"
-                if not original_link.startswith(("http://", "https://")):
-                    original_link = "https://" + original_link  
-                print(original_link)
-                return RedirectResponse(url=original_link, status_code=302)
+                if not original_url.startswith(("http://", "https://")):
+                    original_url = "https://" + original_url  
+                print(original_url)
+                return RedirectResponse(url=original_url, status_code=302)
         
         raise HTTPException(status_code=404, detail="error")
     except Exception as e:
