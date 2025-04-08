@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
 
 # Run workers
-CMD ["fastapi", "run", "run.py", "--host", "0.0.0.0", "--port", "80"]
+CMD ["fastapi", "run", "run.py", "--host", "0.0.0.0", "--port", "8000"]
 
 # Build the Docker image
 # docker build -t fast-redirctor .
