@@ -68,7 +68,7 @@ def get_supabase():
     """Dependency to get the Supabase client."""
     return SupabaseService.get_client()
 
-@app.get("/{path}")
+@app.get("/r/{path}")
 async def redirect_short_url(path: str, supabase: Client = Depends(get_supabase)):
     """Redirect short URLs to their original destinations."""
     try:
@@ -106,4 +106,4 @@ async def redirect_short_url(path: str, supabase: Client = Depends(get_supabase)
 # For local development only
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("run:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
