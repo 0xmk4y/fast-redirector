@@ -7,3 +7,5 @@ pip install supabase
 
 docker build -t fast-redirctor .
 docker run -d -p 80:80 fast-redirctor
+
+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
