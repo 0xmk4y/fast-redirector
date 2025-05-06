@@ -1,4 +1,3 @@
-# app/main.py
 import os
 import logging
 from typing import Optional
@@ -46,11 +45,9 @@ class SupabaseService:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Handle application startup and shutdown events."""
-    # Startup
     logger.info("Starting application...")
     SupabaseService.init()
     yield
-    # Shutdown
     logger.info("Shutting down application...")
 
 # FastAPI application
@@ -84,17 +81,25 @@ async def redirect_short_url(path: str, request: Request, supabase: Client = Dep
         logger.info(f"Looking up slug path: {path}")
         response = supabase.table("_redirects").select("*").eq("slug", path).execute()
         
-        email = request.query_params.get('email')
         # Handle the redirect
         if response.data:
             target_url = response.data[0].get("target_url")
             if target_url:
                 # Ensure URL has a protocol
                 if not target_url.startswith(("http://", "https://")):
-                    target_url = f"https://{target_url}?email={email}"
+                    target_url = f"https://{target_url}"
+                
+                # Only append email parameter if provided
+                email = request.query_params.get('email')
+                if email:
+                    # Check if target URL already has query parameters
+                    if '?' in target_url:
+                        target_url = f"{target_url}&email={email}"
+                    else:
+                        target_url = f"{target_url}?email={email}"
                 
                 logger.info(f"Redirecting to: {target_url}")
-                return RedirectResponse(url=f"{target_url}?email={email}", status_code=302)
+                return RedirectResponse(url=target_url, status_code=302)
         
         # Default redirect for non-existent paths
         logger.info(f"No match found for path: {path}")
